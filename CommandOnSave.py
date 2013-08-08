@@ -6,6 +6,7 @@ import subprocess
 class CommandOnSave(sublime_plugin.EventListener):
     def on_post_save(self, view):
         settings = view.settings()
+        # FIXME (Jim): The plug-in setting does not work.
         folders = settings.get("commands")
         current_file = view.file_name()
 
@@ -13,7 +14,8 @@ class CommandOnSave(sublime_plugin.EventListener):
             cmd_path, cmd = entry.split('::', 1)
 
             if current_file.startswith(cmd_path) and len(cmd) > 0:
-                subprocess.call([cmd], shell=True)
+                command_list = cmd.split(" ")
+                subprocess.call(command_list)
 
 
 def debug(message):
